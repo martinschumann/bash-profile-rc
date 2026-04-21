@@ -1,8 +1,2 @@
-*
-
-!.bash_profile
-!.gitignore
-!rc-available
-!rc-available/*
-!README.md
+/rc-enabled/
 
