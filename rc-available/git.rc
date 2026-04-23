@@ -1,0 +1,5 @@
+# alias gd='git diff'
+# alias gck='git checkout'
+# alias gnb='git checkout -b'
+# alias gac='git add -u && git commit'
+
