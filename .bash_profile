@@ -1,4 +1,4 @@
-file=$(realpath "$0")
+file=$(realpath "${BASH_SOURCE[0]}")
 directory=$(dirname "$file")
 
 # If running bash
