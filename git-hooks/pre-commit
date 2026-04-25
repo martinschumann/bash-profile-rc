@@ -1,0 +1,36 @@
+#!/bin/bash
+
+red="\\033[0;31m"
+green="\\033[0;32m"
+reset="\\033[0m"
+
+$(hash php 2>/dev/null) || printf "\\r${red}[FAIL]${reset} %s\\n" "Git pre-commit script cannot be executed. No PHP binary found." && exit 1
+
+status=0
+# Syntac check PHP files
+for file in $(git status --porcelain | grep '^[AM]' | grep '\.php$' | awk '{ print $2; }'); do
+    php -l $file;
+
+    if [ $? -gt 0 ]; then
+        printf "\\r${red}[FAIL]${reset} %s\\n" "Pre-commit error in file \"$file\""
+        status=1
+    fi
+done
+
+# Syntax check JSON files
+for file in $(git status --porcelain | grep '^[AM]' | grep '.json' | awk '{ print $2; }'); do
+    cat $file | php -r "\$return = (json_decode(file_get_contents('php://stdin'))) ? 0 : 1; exit(\$return);"
+
+    if [ $? -gt 0 ]; then
+        printf "\\r${red}[FAIL]${reset} %s\\n" "Pre-commit error in file \"$file\""
+        status=1
+    fi
+done
+
+# Todo: Syntax check Yaml files
+
+if [ $status -lt 1 ]; then
+    printf "\\r${red}[SUCCESS]${reset} %s\\n" "Passed pre-commit checks"
+fi;
+
+exit $status

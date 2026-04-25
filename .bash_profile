@@ -4,8 +4,8 @@ directory=$(dirname "$file")
 # If running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .profile if it exists
-    if [ -f "$HOME/.profile" ]; then
-        . "$HOME/.profile"
+    if [ -f "${HOME}/.profile" ]; then
+        . "${HOME}/.profile"
     else
         exit 0;
     fi;
