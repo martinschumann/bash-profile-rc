@@ -3,7 +3,7 @@
 file=$(realpath "${BASH_SOURCE[0]}")
 directory=$(dirname $file)
 
-source "$directory/lib.sh"
+source "$directory/lib.message.sh"
 
 [ -h "${HOME}/.bash_profile" ] && _printMessage "Start up file \".bash_profile\" already symlinked." "info" && exit 1
 [ -f "${HOME}/.bash_profile" ] && _printMessage "Start up file \".bash_profile\" already exists. Cannot symlink." "error" && exit 1

@@ -3,7 +3,7 @@
 directory="${BASH_SOURCE%/*}"
 if [[ ! -d "$directory" ]]; then directory="$PWD"; fi;
 
-source "$directory/lib.sh"
+source "$directory/lib.message.sh"
 
 declare -a commands;
 commands+=('all')
