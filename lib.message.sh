@@ -8,7 +8,7 @@ function _printMessage()
     local message=$1;
     local type=$2;
 
-    case "${type}" in
+    case "$type" in
         error)
             printf "\\r${r}[FAILED]${reset}   %s\\n" "${message}"
             ;;

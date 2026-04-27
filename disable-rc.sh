@@ -3,7 +3,7 @@
 directory="${BASH_SOURCE%/*}"
 if [[ ! -d "$directory" ]]; then directory="$PWD"; fi;
 
-source "$directory/lib.message.sh"
+source "${directory}/lib.message.sh"
 
 declare -a commands;
 commands+=('all')
@@ -33,7 +33,7 @@ if [[ ! -f "${directory}/rc-enabled/${1}.rc" && "${1}" != "all" ]]; then
     printf '    * %s\n' "${commands[@]}"
 fi;
 
-cd "$directory/rc-enabled"
+cd "${directory}/rc-enabled"
 
 # Clean up dereferenced symlinks 
 find . -xtype l -delete &> /dev/null

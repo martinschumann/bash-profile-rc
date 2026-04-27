@@ -3,7 +3,7 @@
 directory="${BASH_SOURCE%/*}"
 if [[ ! -d "$directory" ]]; then directory="$PWD"; fi;
 
-source "$directory/lib.message.sh"
+source "${directory}/lib.message.sh"
 
 declare -a commands;
 commands+=('all')
@@ -11,7 +11,7 @@ commands+=('all')
 if [[ -d "${directory}/rc-available" ]]; then
     for file in $(/bin/bash -c "/bin/ls ${directory}/rc-available/*.rc 2>/dev/null");
         do
-          if [ -f "${file}" ]; then
+          if [ -f "$file" ]; then
             commands+=($(basename "${file%.rc}"));
           fi;
         done;
@@ -33,13 +33,13 @@ if [[ ! -f "${directory}/rc-available/${1}.rc" && "${1}" != "all" ]]; then
     printf '    * %s\n' "${commands[@]}"
 fi;
 
-cd "$directory/rc-enabled"
+cd "${directory}/rc-enabled"
 
 # Clean up dereferenced symlinks 
 find . -xtype l -delete &> /dev/null
 
 if [[ "${1}" == "all" ]]; then
-    for file in $(bash -c "/bin/ls ../rc-available/*.rc 2>/dev/null"); do
+    for file in $(/bin/bash -c "/bin/ls ../rc-available/*.rc 2>/dev/null"); do
         if [[ -h $(basename "${file}") ]]; then 
             _printMessage "Command \"$(basename "${file%.rc}")\" already symlinked." "info";
             continue;
