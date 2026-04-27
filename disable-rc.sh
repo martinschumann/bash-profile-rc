@@ -48,7 +48,7 @@ if [[ "${1}" == "all" ]]; then
     done
 else
     if [[ -h "${1}.rc" ]]; then 
-        /bin/rm -f "${1}.rc" && _printMessage "Command \"${command}\" has been unlinked." "success";
+        /bin/rm -f "${1}.rc" && _printMessage "Command \"${1}\" has been unlinked." "success";
     fi;
 fi;
 
