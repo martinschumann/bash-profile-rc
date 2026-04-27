@@ -9,7 +9,7 @@ declare -a commands;
 commands+=('all')
 
 if [[ -d "${directory}/rc-available" ]]; then
-    for file in $(bash -c "/bin/ls ${directory}/rc-available/*.rc 2>/dev/null");
+    for file in $(/bin/bash -c "/bin/ls ${directory}/rc-available/*.rc 2>/dev/null");
         do
           if [ -f "${file}" ]; then
             commands+=($(basename "${file%.rc}"));
@@ -35,6 +35,9 @@ fi;
 
 cd "$directory/rc-enabled"
 
+# Clean up dereferenced symlinks 
+find . -xtype l -delete &> /dev/null
+
 if [[ "${1}" == "all" ]]; then
     for file in $(bash -c "/bin/ls ../rc-available/*.rc 2>/dev/null"); do
         if [[ -h $(basename "${file}") ]]; then 
@@ -47,8 +50,10 @@ else
     if [[ -h "${1}.rc" ]]; then 
         _printMessage "Command \"${1}.rc\" already symlinked." "info";
     else
-        /bin/ln -s -r "${1}.rc" && _printMessage "Command \"${1}.rc\" symlinked." "success"
+        /bin/ln -s -r "../rc-available/${1}.rc" && _printMessage "Command \"${1}.rc\" symlinked." "success"
     fi;
 fi;
+
+source "${HOME}/.bash_profile"
 
 exit 0;
