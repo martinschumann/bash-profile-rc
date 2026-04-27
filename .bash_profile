@@ -11,11 +11,18 @@ fi;
 
 files=();
 
-# echo $directory
 if [ -d "${directory}/rc-enabled" ]; then
     for file in $(/bin/bash -c "ls ${directory}/rc-enabled/*.rc 2>/dev/null");
         do
-            # -L
+            if [ -f "${file}" ]; then
+                files+=("${file}");
+            fi;
+        done;
+fi;
+
+if [ -d "${directory}/rc.d" ]; then
+    for file in $(/bin/bash -c "ls ${directory}/rc.d/*.rc 2>/dev/null");
+        do
             if [ -f "${file}" ]; then
                 files+=("${file}");
             fi;
