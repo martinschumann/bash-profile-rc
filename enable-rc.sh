@@ -54,6 +54,4 @@ else
     fi;
 fi;
 
-source "${HOME}/.bash_profile"
-
 exit 0;
