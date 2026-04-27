@@ -8,6 +8,8 @@ Download repo.
 
 ```bash
 git clone git@github.com:martinschumann/bash-profile-rc.git
+
+cd bash-profile-rc
 ```
 
 Link repo's `.bash_profile` as start up file.
