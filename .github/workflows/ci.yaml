@@ -1,0 +1,22 @@
+name: CI
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    install:
+        name: Install
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+            uses: actions/checkout@v4
+
+            - name: Symlink start up file
+              run: |
+                 cd bash-profile-rc
+                 ./link-bash-profile.sh
+                 ./enable-rc.sh all
+                 source ~/.bash_profile
