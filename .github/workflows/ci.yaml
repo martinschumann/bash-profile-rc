@@ -19,4 +19,4 @@ jobs:
                  cd bash-profile-rc
                  ./link-bash-profile.sh
                  ./enable-rc.sh all
-                 source ~/.bash_profile
+                 source .bash_profile
