@@ -37,5 +37,5 @@ Enable only a specific command.
 Disable all run command files.
 
 ```bash
-./enable-rc.sh all
+./disable-rc.sh all
 ```
