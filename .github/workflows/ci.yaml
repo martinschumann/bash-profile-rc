@@ -16,6 +16,7 @@ jobs:
 
             - name: Symlink start up file
               run: |
+                shopt -s expand_aliases
                 rm -f ~/.bash_profile
                 ./link-bash-profile.sh
                 ./enable-rc.sh all
