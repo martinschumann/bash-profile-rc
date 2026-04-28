@@ -24,7 +24,7 @@ Enable all run command files.
 ./enable-rc.sh all
 ```
 
-Enable a specific command.
+Enable only a specific command.
 
 ```bash
 ./enable-rc.sh outgoing-ip
