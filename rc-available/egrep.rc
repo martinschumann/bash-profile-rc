@@ -1,2 +1,2 @@
-alias egrep='/bin/egrep --colour'
+alias egrep='/usr/bin/egrep --colour'
 

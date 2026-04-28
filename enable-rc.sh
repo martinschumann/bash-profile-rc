@@ -5,7 +5,7 @@ if [[ ! -d "$directory" ]]; then directory="$PWD"; fi;
 
 source "${directory}/lib.message.sh"
 
-declare -a commands;
+commands=();
 commands+=('all')
 
 if [[ -d "${directory}/rc-available" ]]; then
@@ -36,21 +36,24 @@ fi;
 cd "${directory}/rc-enabled"
 
 # Clean up dereferenced symlinks 
-find . -xtype l -delete &> /dev/null
+find . -type l -exec sh -c 'test -e {} || rm -f {}' ";"
 
 if [[ "${1}" == "all" ]]; then
     for file in $(/bin/bash -c "/bin/ls ../rc-available/*.rc 2>/dev/null"); do
-        if [[ -h $(basename "${file}") ]]; then 
-            _printMessage "Command \"$(basename "${file%.rc}")\" already symlinked." "info";
+        filename=$(basename "$file")
+
+        if [[ -h "${PWD}/${filename}" ]]; then 
+            _printMessage "Command \"${filename%.rc}\" already symlinked." "info";
             continue;
         fi;
-        /bin/ln -s -r "${file}" && _printMessage "Command \"$(basename "${file%.rc}")\" symlinked." "success"
+
+        /bin/ln -s "$file" && _printMessage "Command \"$(basename "${file%.rc}")\" symlinked." "success"
     done
 else
     if [[ -h "${1}.rc" ]]; then 
-        _printMessage "Command \"${1}.rc\" already symlinked." "info";
+        _printMessage "Command \"${1}\" already symlinked." "info";
     else
-        /bin/ln -s -r "../rc-available/${1}.rc" && _printMessage "Command \"${1}.rc\" symlinked." "success"
+        /bin/ln -s "../rc-available/${1}.rc" && _printMessage "Command \"${1}\" symlinked." "success"
     fi;
 fi;
 

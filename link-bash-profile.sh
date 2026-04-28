@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file=$(realpath "${BASH_SOURCE[0]}")
-directory=$(dirname $file)
+directory=$(dirname "$file")
 
 source "$directory/lib.message.sh"
 

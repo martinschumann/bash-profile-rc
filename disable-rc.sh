@@ -5,13 +5,13 @@ if [[ ! -d "$directory" ]]; then directory="$PWD"; fi;
 
 source "${directory}/lib.message.sh"
 
-declare -a commands;
+commands=();
 commands+=('all')
 
 if [[ -d "${directory}/rc-enabled" ]]; then
     for file in $(/bin/bash -c "/bin/ls ${directory}/rc-enabled/*.rc 2>/dev/null");
         do
-            if [ -f "${file}" ]; then
+            if [ -f "$file" ]; then
                 commands+=($(basename "${file%.rc}"));
             fi;
         done;
@@ -36,13 +36,15 @@ fi;
 cd "${directory}/rc-enabled"
 
 # Clean up dereferenced symlinks 
-find . -xtype l -delete &> /dev/null
+find . -type l -exec sh -c 'test -e {} || rm -f {}' ";"
 
 if [[ "${1}" == "all" ]]; then
     for command in ${commands[@]}; do
-        if [[ "${command}" == 'all' ]]; then continue; fi;
+        if [[ "${command}" == 'all' ]]; then
+            continue;
+        fi;
 
-        if [[ -h "${command}.rc" ]]; then 
+        if [[ -h "${command}.rc" ]]; then
             /bin/rm -f "${command}.rc" && _printMessage "Command \"${command}\" has been unlinked." "success";
         fi;
     done

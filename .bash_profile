@@ -31,5 +31,5 @@ fi;
 
 for file in ${files[@]}
     do
-        source "${file}"
+        source ${file}
     done;
