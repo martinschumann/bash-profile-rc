@@ -16,6 +16,6 @@ jobs:
 
             - name: Symlink start up file
               run: |
-                 ./link-bash-profile.sh
-                 ./enable-rc.sh all
-                 source .bash_profile
+                rm -f ~/.bash_profile
+                ./link-bash-profile.sh
+                ./enable-rc.sh all
