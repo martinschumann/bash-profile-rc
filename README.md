@@ -4,38 +4,40 @@
 
 # bash-profile-rc
 
-Comforting on a machine.
+Comforting on a machine with Bash as default shell by adding aliases, defining functions and setting shell variables. Provides an active/inactive-mechanism by symlinking disassembled rc-files. Additionally includes a pre-commit hook to syntax check PHP, JSON and YAML files.
 
 ## Installation
 
 Download repo.
 
 ```bash
-git clone git@github.com:martinschumann/bash-profile-rc.git
-
-cd bash-profile-rc
+$ git clone git@github.com:martinschumann/bash-profile-rc.git
+$ cd bash-profile-rc
 ```
 
 Link repo's `.bash_profile` as start up file.
 
 ```bash
-./link-bash-profile.sh
+$ ./link-bash-profile.sh
 ```
 
 Enable all run command files.
 
 ```bash
-./enable-rc.sh all
+$ ./enable-rc.sh all
+$ source ~/.bash_profile
 ```
 
 Enable only a specific command.
 
 ```bash
-./enable-rc.sh outgoing-ip
+$ ./enable-rc.sh outgoing-ip
+$ source ~/.bash_profile
 ```
 
 Disable all run command files.
 
 ```bash
-./disable-rc.sh all
+$ ./disable-rc.sh all
+$ source ~/.bash_profile
 ```
