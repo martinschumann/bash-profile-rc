@@ -1,4 +1,4 @@
 file=$(realpath "${BASH_SOURCE[0]}")
 directory=$(dirname $(dirname $file))
 
-# git config --global core.hooksPath "${directory}/git-hooks/"
+git config --global core.hooksPath "${directory}/git-hooks/"

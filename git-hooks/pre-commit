@@ -1,18 +1,34 @@
 #!/bin/bash
 
-red="\\033[0;31m"
-green="\\033[0;32m"
-reset="\\033[0m"
+file=$(realpath "${BASH_SOURCE[0]}")
+directory=$(dirname $(dirname "$file"))
 
-$(hash php 2>/dev/null) || printf "\\r${red}[FAIL]${reset} %s\\n" "Git pre-commit script cannot be executed. No PHP binary found." && exit 1
+source "$directory/lib.message.sh"
+
+[[ ! $(which php 2>/dev/null) ]] && _printMessage "Git pre-commit script cannot be executed. No PHP binary found." "error" && exit 1
 
 status=0
-# Syntac check PHP files
+# Syntax check PHP files
 for file in $(git status --porcelain | grep '^[AM]' | grep '\.php$' | awk '{ print $2; }'); do
-    php -l $file;
+    message=$(php -l $file 2>/dev/null);
 
     if [ $? -gt 0 ]; then
-        printf "\\r${red}[FAIL]${reset} %s\\n" "Pre-commit error in file \"$file\""
+        _printMessage "Pre-commit error for PHP syntax validation in file \"$file\":" "error"
+        echo  ${message}
+        status=1
+    fi
+done
+
+# Syntax check YAML files
+for file in $(git status --porcelain | grep '^[AM]' | grep '\.y[a]*ml$' | awk '{ print $2; }'); do
+    [[ ! $(which python 2>/dev/null) ]] && _printMessage "No Python binary found. YAML validation will be skipped." "info" && break; 
+    [[ ! $(which pip 2>/dev/null) || ! $(pip show PyYAML 2>/dev/null) ]] && _printMessage "PyYAML parser not found. YAML validation will be skipped." "info" && break;
+
+    message=$(python -c "from yaml import load, Loader; load(open('${file}'), Loader=Loader)" 2>&1);
+
+    if [ $? -gt 0 ]; then
+        _printMessage "Pre-commit error for YAML Validation in file \"$file\":" "error"; 
+        echo ${message}
         status=1
     fi
 done
@@ -22,15 +38,13 @@ for file in $(git status --porcelain | grep '^[AM]' | grep '.json' | awk '{ prin
     cat $file | php -r "\$return = (json_decode(file_get_contents('php://stdin'))) ? 0 : 1; exit(\$return);"
 
     if [ $? -gt 0 ]; then
-        printf "\\r${red}[FAIL]${reset} %s\\n" "Pre-commit error in file \"$file\""
+        _printMessage "Pre-commit error for JSON syntax validation in file \"$file\":" "error"
         status=1
     fi
 done
 
-# Todo: Syntax check Yaml files
-
 if [ $status -lt 1 ]; then
-    printf "\\r${red}[SUCCESS]${reset} %s\\n" "Passed pre-commit checks"
+    _printMessage "Passed all pre-commit checks." "success"
 fi;
 
 exit $status

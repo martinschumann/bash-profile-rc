@@ -1,2 +1,2 @@
-alias egrep='/usr/bin/egrep --colour'
-
+binary=$(which egrep)
+alias egrep="${binary} --colour"
